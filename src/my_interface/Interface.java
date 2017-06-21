@@ -76,6 +76,7 @@ public class Interface extends JFrame{
 		setSize(500,150);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(100, 100);
+		setResizable(false);
 		setVisible(true);
 	}
 	class lis implements ActionListener {
@@ -93,6 +94,8 @@ public class Interface extends JFrame{
 					Interface.Available[1] = Integer.parseInt(SystemSoursesB.getText());
 					Interface.Available[2] = Integer.parseInt(SystemSoursesC.getText());
 					setVisible(false);
+					Interface02 Inte = new Interface02(Available);
+					Inte.LaunchFrame();
 
 				}
 				catch(Exception ex){
