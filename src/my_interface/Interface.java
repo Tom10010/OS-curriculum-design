@@ -98,9 +98,6 @@ public class Interface extends JFrame{
 				catch(Exception ex){
 					JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
 				}
-				finally {
-					/*准备插入第二个界面*/
-				}
 			}
 			
 		}
