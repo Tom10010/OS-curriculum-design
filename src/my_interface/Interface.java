@@ -8,13 +8,13 @@ import javax.swing.*;
 public class Interface extends JFrame{
 
 	/**
-	 * 为银行家算法演示程序设计界面1
+	 * 银行家算法演示程序设计界面1
 	 * date：2017.6.21
 	 * author： 张洪涛
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static int[] source = new int[3];
+	public static int[] Available = new int[3];
 		
 	private JLabel jl, jlA, jlB, jlC;  //创建几个标签
 	private JTextField SystemSoursesA, SystemSoursesB, SystemSoursesC;  // 创建几个输入框
@@ -24,7 +24,7 @@ public class Interface extends JFrame{
 	public Interface(){
 		//资源数组初始化
 		for(int i = 0; i<3; i++){
-			source[i] =0;
+			Available[i] =0;
 		}
 		
 		//初始化标签。
@@ -89,15 +89,17 @@ public class Interface extends JFrame{
 				
 				//尝试将输入框的字符串转化为整形数据
 				try{
-					Interface.source[0] = Integer.parseInt(SystemSoursesA.getText());
-					Interface.source[1] = Integer.parseInt(SystemSoursesB.getText());
-					Interface.source[2] = Integer.parseInt(SystemSoursesC.getText());
+					Interface.Available[0] = Integer.parseInt(SystemSoursesA.getText());
+					Interface.Available[1] = Integer.parseInt(SystemSoursesB.getText());
+					Interface.Available[2] = Integer.parseInt(SystemSoursesC.getText());
+					setVisible(false);
+
 				}
 				catch(Exception ex){
 					JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
 				}
 				finally {
-					setVisible(false);
+					/*准备插入第二个界面*/
 				}
 			}
 			
