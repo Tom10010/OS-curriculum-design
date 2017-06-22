@@ -23,12 +23,11 @@ public class Interface02 extends JFrame{
 	public static int[] Available = new int[3];
 	public int[][] Max = new int[5][3];
 	public int[][] Allocation = new int[5][3];
-	public int[][] Need = new int[5][3];
+	public int[][] Need = new int[5][4];
 	public int[] request = new int[3];
 	//定义几个标签
 	private JLabel JLMax, JLAllocation, JLNeed, JLAvailable, JLBlank1, JLBlank2;
-	private JLabel[] JLP;
-	private JLabel JLsystemSource;
+	private JLabel JLsystemSource,JLrequest;
 	
 	//定义几个输入框
 	private JTextField[] JTMaxSourceNum;
@@ -37,7 +36,8 @@ public class Interface02 extends JFrame{
 	private JTextField[] JTRequestSourceNum;
 	
 	//定义几个按钮
-	private JButton T0Button, RequestButton;
+	private JButton[] JbP;
+	private JButton T0Button;
 	
 	//定义几个面板
 	private JPanel jpEast, jpNorth, jpCenter, jpSouth, jp1, jp2, jp3, jp4; 
@@ -48,6 +48,10 @@ public class Interface02 extends JFrame{
 	public Interface02(int[] available2){
 		//初始化面板
 		this.Available = available2;
+		
+		for(int i = 0; i < 5; i++){
+			Need[i][3] = 0;
+		}
 		
 		jpSouth = new JPanel();
 		jpNorth = new JPanel();
@@ -64,16 +68,16 @@ public class Interface02 extends JFrame{
 		JLAvailable = new JLabel("    Available");
 		 
 		//初始化界面左边的元素
-		JLP = new JLabel[5];
+		JbP = new JButton[5];
 		for(int i = 0; i<5; i++){
-			JLP[i] = new JLabel("  P" + i);
+			JbP[i] = new JButton("P" + i);
 		}
 		JLBlank1 = new JLabel("   ");
 		JLBlank2 = new JLabel("   ");
 		
 		//初始化界面下方的元素
+		JLrequest = new JLabel("请填写资源请求量：");
 		T0Button = new JButton("T0时刻的安全性");
-		RequestButton = new JButton("request");
 		JTRequestSourceNum = new JTextField[3];
 		for(int i = 0; i < 3; i++){
 			JTRequestSourceNum[i] = new JTextField(3);
@@ -106,19 +110,21 @@ public class Interface02 extends JFrame{
 		GridLayout glEast = new GridLayout(7, 1, 1, 1);
 		jpEast.setLayout(glEast);
 		for(int i = 0; i < 5; i++){
-			jpEast.add(JLP[i]);
+			jpEast.add(JbP[i]);
 		}
 		jpEast.add(JLBlank2);
 		
 		//将界面下方的元素添加到面板
-		jpSouth.add(T0Button);
+		jpSouth.add(JLrequest);
 		jpSouth.add(JTRequestSourceNum[0]);
 		jpSouth.add(JTRequestSourceNum[1]);
 		jpSouth.add(JTRequestSourceNum[2]);
-		jpSouth.add(RequestButton);
+		jpSouth.add(T0Button);
 		/*添加监听器*/
 		T0Button.addActionListener(new lis());
-		RequestButton.addActionListener(new lis());
+		for(int i = 0; i < 5; i++){
+			JbP[i].addActionListener(new lis());
+		}
 		
 		//将界面中间的元素添加到面板
 		GridLayout gl1 = new GridLayout(5, 3, 1, 1);
@@ -142,7 +148,7 @@ public class Interface02 extends JFrame{
 		c.add(jpSouth, "South");
 		
 		//初始化窗口
-		setTitle("演示程序");
+		setTitle("填入相应的资源数目");
 		setSize(700,270);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -156,46 +162,52 @@ public class Interface02 extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
-				
 				if(source == T0Button){
 					int k = 0;
-						try{
-							
-							//尝试从输入框中获取数组元素
-							for(int i = 0; i < 5; i++){
-								for(int j = 0; j < 3; j++){
-								Max[i][j] = Integer.parseInt(JTMaxSourceNum[k].getText());
-								k++;
+					try{					
+						//尝试从输入框中获取数组元素
+						for(int i = 0; i < 5; i++){
+							for(int j = 0; j < 3; j++){
+							Max[i][j] = Integer.parseInt(JTMaxSourceNum[k].getText());
+							k++;
 							}
 						}
-						k = 0;
 						//尝试从输入框中获取数组元素
+						k = 0;
 						for(int i = 0; i < 5; i++){
 							for(int j = 0; j < 3; j++){
 								Allocation[i][j] = Integer.parseInt(JTAllocationSourceNum[k].getText());
 								k++;
 							}
 						}
-						k = 0;
 						//尝试从输入框中获取数组元素
+						k = 0;
 						for(int i = 0; i < 5; i++){
 							for(int j = 0; j < 3; j++){
 								Need[i][j] = Integer.parseInt(JTNeedSourceNum[k].getText());
 								k++;
 							}
 						}
-						}
-						catch(Exception ex){
-							JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
-						}
-					
-					/*调用相应的函数*/
+						Banker banker = new Banker(Available, Max, Allocation, Need);
+					}
+					catch(Exception ex){
+						JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
+					}
+				
 				}
-				else if(source == RequestButton){
+				else if(source != T0Button){
+					if(JTRequestSourceNum[0].getText() == null || JTRequestSourceNum[1].getText() == null || JTRequestSourceNum[2].getText() == null)
+						JOptionPane.showMessageDialog(null, "请先在窗口下方填写相应的资源请求量。", "提示！", JOptionPane.ERROR_MESSAGE);
+					else
+					try{
 					for(int i = 0; i < 3; i++){
 						request[i] = Integer.parseInt(JTRequestSourceNum[i].getText());
+						/**调用相应的函数*/
+						}
 					}
-					/*调用相应的函数*/
+					catch(Exception ex){
+						JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 			
