@@ -21,10 +21,10 @@ public class Interface02 extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	public static int[] Available = new int[3];
-	public int[][] Max = new int[5][3];
-	public int[][] Allocation = new int[5][3];
-	public int[][] Need = new int[5][4];
-	public int[] request = new int[3];
+	public static int[][] Max = new int[5][3];
+	public static int[][] Allocation = new int[5][3];
+	public static int[][] Need = new int[5][4];
+	public static int[] request = new int[3];  //存放请求资源量数组
 	//定义几个标签
 	private JLabel JLMax, JLAllocation, JLNeed, JLAvailable, JLBlank1, JLBlank2;
 	private JLabel JLsystemSource,JLrequest;
@@ -163,54 +163,188 @@ public class Interface02 extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
 				if(source == T0Button){
-					int k = 0;
-					try{					
-						//尝试从输入框中获取数组元素
-						for(int i = 0; i < 5; i++){
-							for(int j = 0; j < 3; j++){
-							Max[i][j] = Integer.parseInt(JTMaxSourceNum[k].getText());
-							k++;
-							}
-						}
-						//尝试从输入框中获取数组元素
-						k = 0;
-						for(int i = 0; i < 5; i++){
-							for(int j = 0; j < 3; j++){
-								Allocation[i][j] = Integer.parseInt(JTAllocationSourceNum[k].getText());
-								k++;
-							}
-						}
-						//尝试从输入框中获取数组元素
-						k = 0;
-						for(int i = 0; i < 5; i++){
-							for(int j = 0; j < 3; j++){
-								Need[i][j] = Integer.parseInt(JTNeedSourceNum[k].getText());
-								k++;
-							}
-						}
-						Banker banker = new Banker(Available, Max, Allocation, Need);
-					}
-					catch(Exception ex){
-						JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
-					}
-				
+					getSourceNum();
+					Banker banker = new Banker(Available, Max, Allocation, Need, 0);
 				}
-				else if(source != T0Button){
-					if(JTRequestSourceNum[0].getText() == null || JTRequestSourceNum[1].getText() == null || JTRequestSourceNum[2].getText() == null)
-						JOptionPane.showMessageDialog(null, "请先在窗口下方填写相应的资源请求量。", "提示！", JOptionPane.ERROR_MESSAGE);
-					else
-					try{
+				else if(source == JbP[0]){
+//					if(JTRequestSourceNum[0].getText() == null || JTRequestSourceNum[1].getText() == null || JTRequestSourceNum[2].getText() == null)
+//						JOptionPane.showMessageDialog(null, "请先在窗口下方填写相应的资源请求量。", "提示！", JOptionPane.ERROR_MESSAGE);
+//					else
+//					try{
+//					for(int i = 0; i < 3; i++){
+//						request[i] = Integer.parseInt(JTRequestSourceNum[i].getText());
+//						}
+//					/**调用相应的函数*/
+//					if((request[0] <= Need[0][0]) && (request[1] <= Need[0][1]) && (request[2] <= Need[0][2])){
+//						if(request[0] <= Available[0] && request[1] <= Available[1] && request[2] <= Available[2]){
+					getSourceNum();
 					for(int i = 0; i < 3; i++){
-						request[i] = Integer.parseInt(JTRequestSourceNum[i].getText());
-						/**调用相应的函数*/
+						Available[0] = Interface.Available[0];
+						Available[1] = Interface.Available[2];
+						Available[2] = Interface.Available[2];
+					}
+					for(int i = 0; i < 3; i++)
+						System.out.println("Available:    " + Available[i]);
+					for(int i = 0; i < 5; i++)
+						for(int j = 0; j < 3; j++)
+							System.out.println("Max:   "+Max[i][j]);
+					for(int i = 0; i < 5; i++)
+						for(int j = 0; j < 3; j++)
+							System.out.println("Allocation:    "+Allocation[i][j]);
+					for(int i = 0; i < 5; i++)
+						for(int j = 0; j < 3; j++)
+							System.out.println("Need:    "+Need[i][j]);
+					requestRepeat(0);
+							//Banker Bank = new Banker();
+//						}
+//					}
+//					}
+//					catch(Exception ex){
+//						JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
+//					}
+				}
+				else if(source == JbP[1]){
+					//得到原始数据
+					getSourceNum();
+					Available[0] = Integer.parseInt(Interface.SystemSoursesA.getText());
+					Available[1] = Integer.parseInt(Interface.SystemSoursesB.getText());
+					Available[2] = Integer.parseInt(Interface.SystemSoursesC.getText());
+					
+					//数据处理
+					requestRepeat(1);
+
+				}
+				
+				else if(source == JbP[2]){
+					getSourceNum();
+					Available[0] = Integer.parseInt(Interface.SystemSoursesA.getText());
+					Available[1] = Integer.parseInt(Interface.SystemSoursesB.getText());
+					Available[2] = Integer.parseInt(Interface.SystemSoursesC.getText());
+					
+					//数据处理
+					requestRepeat(2);		
+					
+				}
+
+				else if(source == JbP[3]){
+					getSourceNum();
+					Available[0] = Integer.parseInt(Interface.SystemSoursesA.getText());
+					Available[1] = Integer.parseInt(Interface.SystemSoursesB.getText());
+					Available[2] = Integer.parseInt(Interface.SystemSoursesC.getText());
+					
+					//数据处理
+					requestRepeat(3);
+
+				}
+
+				else if(source == JbP[4]){
+					getSourceNum();
+					Available[0] = Integer.parseInt(Interface.SystemSoursesA.getText());
+					Available[1] = Integer.parseInt(Interface.SystemSoursesB.getText());
+					Available[2] = Integer.parseInt(Interface.SystemSoursesC.getText());
+					
+					//数据处理
+					requestRepeat(4);			
+					
+				}
+
+			}
+			
+			private void getSourceNum() {
+				// TODO Auto-generated method stub
+				int k = 0;
+				try{					
+					//尝试从输入框中获取数组元素
+					for(int i = 0; i < 5; i++){
+						for(int j = 0; j < 3; j++){
+						Max[i][j] = Integer.parseInt(JTMaxSourceNum[k].getText());
+						k++;
 						}
 					}
-					catch(Exception ex){
-						JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
+					//尝试从输入框中获取数组元素
+					k = 0;
+					for(int i = 0; i < 5; i++){
+						for(int j = 0; j < 3; j++){
+							Allocation[i][j] = Integer.parseInt(JTAllocationSourceNum[k].getText());
+							k++;
+						}
 					}
+					//尝试从输入框中获取数组元素
+					k = 0;
+					for(int i = 0; i < 5; i++){
+						for(int j = 0; j < 3; j++){
+							Need[i][j] = Integer.parseInt(JTNeedSourceNum[k].getText());
+							k++;
+						}
+					}
+				}
+				catch(Exception ex){
+					JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			
+			private void requestRepeat(int p) {
+				// TODO Auto-generated method stub
+				if(JTRequestSourceNum[0].getText() == null || JTRequestSourceNum[1].getText() == null || JTRequestSourceNum[2].getText() == null)
+					JOptionPane.showMessageDialog(null, "请先在窗口下方填写相应的资源请求量。", "提示！", JOptionPane.ERROR_MESSAGE);
+				else
+				try{
+				for(int i = 0; i < 3; i++){
+					request[i] = Integer.parseInt(JTRequestSourceNum[i].getText());
+					}
+				/**调用相应的函数*/
+				if((request[0] <= Need[p][0]) && (request[1] <= Need[p][1]) && (request[2] <= Need[p][2]) && (request[0] <= Available[0]) && (request[1] <= Available[1]) && (request[2] <= Available[2])){
+						int temp = 0;
+						temp = Max[p][0];
+						Max[p][0] = Max[0][0];
+						Max[0][0] = temp;
+						
+						temp = Max[p][1];
+						Max[p][1] = Max[0][1];
+						Max[0][1] = temp;
+						
+						temp = Max[p][2];
+						Max[p][2] = Max[0][2];
+						Max[0][2] = temp;
+						
+						temp = Allocation[p][0] + request[0];
+						Allocation[p][0] = Allocation[0][0];
+						Allocation[0][0] = temp;
+						
+						temp = Allocation[p][1] + request[1] ;
+						Allocation[p][1] = Allocation[0][1];
+						Allocation[0][1] = temp;
+						
+						temp = Allocation[p][2] + request[2];
+						Allocation[p][2] = Allocation[0][2];
+						Allocation[0][2] = temp;
+						
+						temp = Need[p][0] - request[0];
+						Need[p][0] = Need[0][0];
+						Need[0][0] = temp;
+						
+						temp = Need[p][1] - request[1] ;
+						Need[p][1] = Need[0][1];
+						Need[0][1] = temp;
+						
+						temp =Need[p][2] - request[2];
+						Need[p][2] = Need[0][2];
+						Need[0][2] = temp;
+						
+						Available[0] = Available[0] - request[0];
+						Available[1] = Available[1] - request[1];
+						Available[2] = Available[2] - request[2];	
+						Banker banker = new Banker(Available, Max, Allocation, Need, p);
+					}
+				else{
+					JOptionPane.showMessageDialog(null, "如果进程"+p+"请求量为"+request[0]+" "+request[1]+" "+request[2]+"时系统不安全！", "错误提示！", JOptionPane.ERROR_MESSAGE);
+
+				}
+				}
+				catch(Exception ex){
+					JOptionPane.showMessageDialog(null, "输入的数字格式不正确，请重新输入。", "错误提示！", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub

@@ -17,7 +17,7 @@ public class Interface extends JFrame{
 	public static int[] Available = new int[3];
 		
 	private JLabel jl, jlA, jlB, jlC;  //创建几个标签
-	private JTextField SystemSoursesA, SystemSoursesB, SystemSoursesC;  // 创建几个输入框
+	public static JTextField SystemSoursesA, SystemSoursesB, SystemSoursesC;  // 创建几个输入框
 	private JButton cancel, ok;  //创建按钮
 	private JPanel jp1, jp2, jp3;
 	
